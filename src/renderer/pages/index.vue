@@ -7,7 +7,7 @@
             <div style="flex: 60%;">
                 <h1>Electron Nuxt TypeScript</h1>
                 <p>Electron: {{ versions.electron }}</p>
-                <p>Chrome: {{ versions.chrome }}</p>
+                <p>Chromed: {{ versions.chrome }}</p>
                 <p>Node: {{ versions.node }}</p>
             </div>
         </div>
