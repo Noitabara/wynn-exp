@@ -79,7 +79,7 @@ app.on("ready", async () => {
         }
 
         exp_manager = new ExpManager(file_path.log_file_path, 10000)
-        exp_manager.on('EXP', (exp_data: IExpData) => {
+        exp_manager.on('EXP_COLLECTION', (exp_data: Array<IExpData>) => {
             win.webContents.send('EXP_INFO_UPDATE', exp_data)
         })
     })
