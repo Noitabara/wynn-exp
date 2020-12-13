@@ -1,28 +1,32 @@
 <template>
-    <div>
-        <div class="row">
-            <div style="flex: 40%;">
-                <logo />
-            </div>
-            <div style="flex: 60%;">
-                <h1>Electron Nuxt TypeScript</h1>
-                <p>Electron: {{ versions.electron }}</p>
-                <p>Chromed: {{ versions.chrome }}</p>
-                <p>Node: {{ versions.node }}</p>
-            </div>
-        </div>
-    </div>
+    <b-container id="main" class="bv-example-row">
+        <b-row>
+            <b-col>
+                <p>Technical Stuff.</p>
+                <b-button @click="selectFolder">.minecraft Log Folder</b-button>
+            </b-col>
+            <b-col>
+                <level-component/>
+            </b-col>
+            <b-col>3/3</b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "nuxt-class-component";
-import Logo from "~/components/Logo.vue";
-import { remote } from "electron";
+// import Logo from "~/components/Logo.vue";
+import LevelComponent from "~/components/Level.vue"
+import { remote, ipcRenderer } from "electron";
 
-@Component({ components: { Logo } })
+@Component({ components: { LevelComponent } })
 export default class Index extends Vue {
-    readonly versions = remote.process.versions;
+    // public currentDirectory: string | undefined
+    selectFolder() {
+        ipcRenderer.send('FOLDER_OPEN')
+    }
+    startExp() {}
 }
 </script>
 
@@ -40,5 +44,8 @@ body {
 
 .centered {
     text-align: center;
+}
+#main {
+    padding-top: 1em
 }
 </style>

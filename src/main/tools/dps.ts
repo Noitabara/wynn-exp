@@ -23,7 +23,7 @@ export default class ExpManager extends EventEmitter {
         console.log('File info stuff.', this.filePath, this.firstReadSize, this.updateReadSize)
 
         this.tickrate = setInterval(() => {
-            this.dispatch('PER_MINUTE', '')
+            this.dispatch('MINUTE_PASS', '')
         }, 60000)
         this.readFile = setInterval(() => {
             const byteDiff = statSync(this.filePath).size - this.updateReadSize
