@@ -12,6 +12,7 @@ export default class ExpManager extends EventEmitter {
     public readFile: NodeJS.Timer
 
     constructor(passed_file_path: string = '') {
+        console.log('setting up exp.')
         super()
         this.filePath = passed_file_path
         if (!this.filePath) {

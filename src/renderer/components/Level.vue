@@ -22,6 +22,7 @@ import Vue from "vue";
 import Component, { namespace } from "nuxt-class-component";
 //~ Vuex.
 import { namespace as settingStoreNamespace, IMasterState, actionType } from '~/store/welp'
+import { ipcRenderer } from "electron";
 const SettingStore = namespace(settingStoreNamespace)
 
 @Component({})
@@ -150,6 +151,7 @@ export default class LevelComponent extends Vue {
     setOurData() {
         this.setExperienceValue(this.current_experience)
         this.setMaxExperience(this.selected)
+        ipcRenderer.send('SET_CUR_EXP', this.current_experience)
         this.locked = true
     }
 }

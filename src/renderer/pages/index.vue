@@ -8,25 +8,34 @@
             <b-col>
                 <level-component/>
             </b-col>
-            <b-col>3/3</b-col>
+            <b-col>
+                <calc-component v-if="maxExperienceValue" />
+            </b-col>
         </b-row>
     </b-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "nuxt-class-component";
+import Component, { namespace } from "nuxt-class-component";
 // import Logo from "~/components/Logo.vue";
 import LevelComponent from "~/components/Level.vue"
-import { remote, ipcRenderer } from "electron";
+import CalcComponent from '~/components/Calc.vue'
+import { ipcRenderer } from "electron";
+//~ Vuex.
+import { namespace as settingStoreNamespace, IMasterState, actionType } from '~/store/welp'
+const SettingStore = namespace(settingStoreNamespace)
 
-@Component({ components: { LevelComponent } })
+@Component({ components: { LevelComponent, CalcComponent } })
 export default class Index extends Vue {
+    //~Moar Vuex.
+    @SettingStore.State('current_experience_value') currentExpValue!: IMasterState['current_experience_value']
+    @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
+
     // public currentDirectory: string | undefined
     selectFolder() {
         ipcRenderer.send('FOLDER_OPEN')
     }
-    startExp() {}
 }
 </script>
 

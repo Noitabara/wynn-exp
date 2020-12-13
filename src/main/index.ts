@@ -64,40 +64,44 @@ app.on("ready", async () => {
     ipcMain.on('START', () => {
         let file_path = JSON.parse(readFileSync('./path.json', { encoding: 'UTF-8'}))
         //Check for file here
-        if (!existsSync(file_path)) {
+        console.log('fuck', file_path.log_file_path)
+        if (!existsSync(file_path.log_file_path)) {
             return
         }
-        exp_manager = new ExpManager(file_path)
-    })
+        exp_manager = new ExpManager(file_path.log_file_path)
+        
+        
+        
+        exp_manager.on('EXP', (exp_amount: number) => {
+            // Should probably move this calculation to a new class/the manager class.
+            total_exp_since_last_count += exp_amount
+        })
 
 
-    let exp_array: Array<number> = []
+        let exp_array: Array<number> = []
     
-    let total_exp_since_last_count: number = 0
-    let iterations: number = 0
-    
-    let current_character_exp: number = 0
-    ipcMain.on('SET_CUR_EXP', (event, new_EXP: number) => { current_character_exp = new_EXP })
-    // let required_exp_to_level: number = 0
-    // ipcMain.on('SET_REQ_EXP', (event, new_EXP: number) => { required_exp_to_level = new_EXP })
+        let total_exp_since_last_count: number = 0
+        let iterations: number = 0
+        
+        let current_character_exp: number = 0
+        ipcMain.on('SET_CUR_EXP', (event, new_EXP: number) => { current_character_exp = new_EXP })
+        // let required_exp_to_level: number = 0
+        // ipcMain.on('SET_REQ_EXP', (event, new_EXP: number) => { required_exp_to_level = new_EXP })
 
-    exp_manager.on('EXP', (exp_amount: number) => {
-        // Should probably move this calculation to a new class/the manager class.
-        total_exp_since_last_count += exp_amount
-    })
-    exp_manager.on('MINUTE_PASS', () => {
-        // Send the new data to the frontend
-        current_character_exp += total_exp_since_last_count
-        exp_array.push(total_exp_since_last_count)
-        const exp_on_avg: number = Math.floor(
-            exp_array.reduce((acc, cv) => {
-                acc += cv
-                return acc
-            }, 0)/exp_array.length
-        )
-        iterations++
-        console.log(total_exp_since_last_count, exp_on_avg, iterations)
-        win.webContents.send('EXP_UPDATE', { EXP_LAST_MIN: total_exp_since_last_count, EXP_ON_AVG: exp_on_avg })
-        total_exp_since_last_count = 0
+        exp_manager.on('MINUTE_PASS', () => {
+            // Send the new data to the frontend
+            current_character_exp += total_exp_since_last_count
+            exp_array.push(total_exp_since_last_count)
+            const exp_on_avg: number = Math.floor(
+                exp_array.reduce((acc, cv) => {
+                    acc += cv
+                    return acc
+                }, 0)/exp_array.length
+            )
+            iterations++
+            console.log('from minute_pass event', current_character_exp, total_exp_since_last_count, exp_on_avg, iterations)
+            win.webContents.send('EXP_UPDATE', { CURRENT_EXP: current_character_exp, EXP_LAST_MIN: total_exp_since_last_count, EXP_ON_AVG: exp_on_avg })
+            total_exp_since_last_count = 0
+        })
     })
 });
