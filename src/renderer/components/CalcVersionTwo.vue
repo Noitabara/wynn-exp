@@ -1,6 +1,10 @@
 <template>
     <div>
         <b-button @click="startExpMeter">Start.</b-button>
+        <p>60 second array length {{ experience_pool.length }}</p>
+        <p>{{ fiveSecondReport }} </p>
+        <p>{{ someCalculation }}</p>
+        <p>{{ experience_pool }}</p>
     </div>
 </template>
 
@@ -25,12 +29,19 @@ export default class CalcVersiontwoComponent extends Vue {
     public last_second_calculation: number = 0
     /**Testing out an array for time gating experience data. */
     public experience_pool: Array<number> = []
-    
+
     //* computed properties.
     get someCalculation(): number {
         return (this.maxExperienceValue - this.current_experience) / this.last_second_calculation
     }
-
+    /** Last 5 of the 60 second report. */
+    get fiveSecondReport(): any {
+        return this.experience_pool.slice(this.experience_pool.length - 5)
+    }
+    /** Last 30 of the 60 second report */
+    get thirtySecondReport(): any {
+        return this.experience_pool.slice(this.experience_pool.length - 30)
+    }
     //* Methods
     startExpMeter() {
         ipcRenderer.send('START_NEW_EXP_METER')
@@ -46,9 +57,13 @@ export default class CalcVersiontwoComponent extends Vue {
                 acc += cv.change_in_exp
                 return acc
             }, 0)
-            this.current_experience = exp_data_collection[exp_data_collection.length].current_exp
 
+            this.current_experience = exp_data_collection[exp_data_collection.length - 1].current_exp
 
+            this.experience_pool.push(this.last_second_calculation)
+            if (this.experience_pool.length > 60) {
+                this.experience_pool.shift()
+            }
         })
     }
 }

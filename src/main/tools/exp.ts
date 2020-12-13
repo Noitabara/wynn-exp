@@ -54,9 +54,9 @@ export default class ExpManager extends EventEmitter {
                         // const calcData: number = parseInt(data_row.split(': EXP: �2+')[1].split('XP (')[0])
                         const [old_exp_amnt, current_exp_amnt, change_in_exp_amnt] = data_row.split('EXP:_')[1].split('_')
                         const exp_data: IExpData = {
-                            old_amount: old_exp_amnt,
-                            current_exp: current_exp_amnt,
-                            change_in_exp: change_in_exp_amnt
+                            old_amount: parseInt(old_exp_amnt),
+                            current_exp: parseInt(current_exp_amnt),
+                            change_in_exp: parseInt(change_in_exp_amnt)
                         }
                         // console.log(exp_data)
                         exp_data_collection.push(exp_data)
