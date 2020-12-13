@@ -1,7 +1,6 @@
 <template>
     <div>
         <p>Level Information:</p>
-        <b-form-input v-model="current_experience" v-if="!locked"></b-form-input>
         <b-row v-if="!locked">
             <b-col>
                 <b-form-select
@@ -28,7 +27,6 @@ const SettingStore = namespace(settingStoreNamespace)
 @Component({})
 export default class LevelComponent extends Vue {
     //~Moar Vuex.
-    @SettingStore.Action(actionType.SET_EXPERIENCE_VALUE) setExperienceValue!: (newExperienceValue: number) => {}
     @SettingStore.Action(actionType.SET_MAX_EXPERIENCE_VALUE) setMaxExperience!: (maxExperienceValue: number) => {}
 
     public locked = false
@@ -142,17 +140,12 @@ export default class LevelComponent extends Vue {
         { text: 105, value: 249232940 },
     ]
 
-    public current_experience = 0
-
     get selectedFormatted(): number | null {
         return this.selected?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
 
     setOurData() {
-        this.setExperienceValue(this.current_experience)
         this.setMaxExperience(this.selected)
-        ipcRenderer.send('SET_CUR_EXP', this.current_experience)
-        this.locked = true
     }
 }
 </script>

@@ -42,6 +42,7 @@ export default class ExpManager extends EventEmitter {
         this.readFile = setInterval(() => {
             const byteDiff = statSync(this.filePath).size - this.updateReadSize
             if (byteDiff > 0) {
+                const exp_data_collection: Array<IExpData> = []
                 const here_we_go = createReadStream(this.filePath, { autoClose: true, start: this.updateReadSize })
                     .pipe(parse({ headers: false, delimiter: '\n' }))
                     .on('error', error => console.error(error))
@@ -57,11 +58,16 @@ export default class ExpManager extends EventEmitter {
                             current_exp: current_exp_amnt,
                             change_in_exp: change_in_exp_amnt
                         }
-                        console.log(exp_data)
-                        this.dispatch('EXP', exp_data)
+                        // console.log(exp_data)
+                        exp_data_collection.push(exp_data)
+                        // this.dispatch('EXP', exp_data)
                     })
                     .on('end', rc => {
                         here_we_go.destroy()
+                        if (exp_data_collection.length > 0) {
+                            console.log(exp_data_collection)
+                            this.dispatch('EXP_COLLECTION', exp_data_collection)
+                        }
                     })
             }
             this.updateReadSize += byteDiff

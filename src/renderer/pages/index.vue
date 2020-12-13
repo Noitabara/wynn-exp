@@ -8,9 +8,6 @@
             <b-col>
                 <level-component/>
             </b-col>
-            <b-col>
-                <calc-component v-if="maxExperienceValue" />
-            </b-col>
         </b-row>
     </b-container>
 </template>
@@ -26,10 +23,9 @@ import { ipcRenderer } from "electron";
 import { namespace as settingStoreNamespace, IMasterState, actionType } from '~/store/welp'
 const SettingStore = namespace(settingStoreNamespace)
 
-@Component({ components: { LevelComponent, CalcComponent } })
+@Component({ components: { LevelComponent } })
 export default class Index extends Vue {
     //~Moar Vuex.
-    @SettingStore.State('current_experience_value') currentExpValue!: IMasterState['current_experience_value']
     @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
 
     // public currentDirectory: string | undefined
