@@ -6,7 +6,8 @@ import getPort from "get-port";
 import useragent from "express-useragent";
 import { resolve } from "path";
 
-import ExpManager from "./tools/dps";
+// import ExpManager from "./tools/dps";
+import ExpManager, { IExpData } from "./tools/exp"
 
 import fs, { writeFileSync, readFileSync, existsSync } from 'fs'
 
@@ -47,6 +48,7 @@ app.on("ready", async () => {
         const port = await getPort();
         server.listen(port, "localhost", () => loadContent(port));
     }
+
     ipcMain.on('FOLDER_OPEN', async () => {
         //Check for file
         //If file, continue
@@ -61,47 +63,24 @@ app.on("ready", async () => {
             writeFileSync('./path.json', JSON.stringify({ log_file_path: `${directory}/latest.log` }))
         }
     })
-    ipcMain.on('START', () => {
-        let file_path = JSON.parse(readFileSync('./path.json', { encoding: 'UTF-8'}))
-        //Check for file here
-        console.log('fuck', file_path.log_file_path)
+
+
+    ipcMain.on('START_NEW_EXP_METER', () => {
+        /**
+         * TODO - New exp meter
+         * TODO - Forward data to frontend and calc there?
+         */
+        /** Variable containing the currently configured file_path in the json. Problem if this does not exist, should throw an exception. */
+        const file_path = JSON.parse(readFileSync('./path.json', {encoding: 'UTF-8'}))
+        /** Simple check and consolelog to make sure that the file exists. */
         if (!existsSync(file_path.log_file_path)) {
+            console.log('Issue finding the file in the config folder.')
             return
         }
-        exp_manager = new ExpManager(file_path.log_file_path)
-        
-        
-        
-        exp_manager.on('EXP', (exp_amount: number) => {
-            // Should probably move this calculation to a new class/the manager class.
-            total_exp_since_last_count += exp_amount
-        })
 
-
-        let exp_array: Array<number> = []
-    
-        let total_exp_since_last_count: number = 0
-        let iterations: number = 0
-        
-        let current_character_exp: number = 0
-        ipcMain.on('SET_CUR_EXP', (event, new_EXP: number) => { current_character_exp = new_EXP })
-        // let required_exp_to_level: number = 0
-        // ipcMain.on('SET_REQ_EXP', (event, new_EXP: number) => { required_exp_to_level = new_EXP })
-
-        exp_manager.on('MINUTE_PASS', () => {
-            // Send the new data to the frontend
-            current_character_exp += total_exp_since_last_count
-            exp_array.push(total_exp_since_last_count)
-            const exp_on_avg: number = Math.floor(
-                exp_array.reduce((acc, cv) => {
-                    acc += cv
-                    return acc
-                }, 0)/exp_array.length
-            )
-            iterations++
-            console.log('from minute_pass event', current_character_exp, total_exp_since_last_count, exp_on_avg, iterations)
-            win.webContents.send('EXP_UPDATE', { CURRENT_EXP: current_character_exp, EXP_LAST_MIN: total_exp_since_last_count, EXP_ON_AVG: exp_on_avg })
-            total_exp_since_last_count = 0
+        exp_manager = new ExpManager(file_path.log_file_path, 10000)
+        exp_manager.on('EXP', (exp_data: IExpData) => {
+            win.webContents.send('EXP_INFO_UPDATE', exp_data)
         })
     })
 });
