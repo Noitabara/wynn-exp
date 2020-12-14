@@ -13,7 +13,6 @@ export default class ExpManager extends EventEmitter {
 
     public tickrateInterval: number
     /**
-     * 
      * @param passed_file_path The path that the file we want to read resides in.
      * @param tickrate_interval The tickrate to configure the tickrate_passed event to.
      */

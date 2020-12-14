@@ -60,7 +60,7 @@ app.on("ready", async () => {
         if (!existsSync(`${directory}/latest.log`)) {
             console.error('error', directory)
         } else {
-            writeFileSync('./path.json', JSON.stringify({ log_file_path: `${directory}/latest.log` }))
+            writeFileSync('./log_path.json', JSON.stringify({ log_file_path: `${directory}/latest.log` }))
         }
     })
 
@@ -71,7 +71,7 @@ app.on("ready", async () => {
          * TODO - Forward data to frontend and calc there?
          */
         /** Variable containing the currently configured file_path in the json. Problem if this does not exist, should throw an exception. */
-        const file_path = JSON.parse(readFileSync('./path.json', {encoding: 'UTF-8'}))
+        const file_path = JSON.parse(readFileSync('./log_path.json', {encoding: 'UTF-8'}))
         /** Simple check and consolelog to make sure that the file exists. */
         if (!existsSync(file_path.log_file_path)) {
             console.log('Issue finding the file in the config folder.')
