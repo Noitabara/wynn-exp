@@ -77,10 +77,15 @@ app.on("ready", async () => {
             console.log('Issue finding the file in the config folder.')
             return
         }
-
+        /** Create our new exp manager and store it in the upper var exp_manager */
         exp_manager = new ExpManager(file_path.log_file_path, 10000)
+        /** When we recieve the EXP_COLLECTION event from the exp_manager, send the exp info to the frotnend using webContents */
         exp_manager.on('EXP_COLLECTION', (exp_data: Array<IExpData>) => {
             win.webContents.send('EXP_INFO_UPDATE', exp_data)
+        })
+        /** When we recieve the NO_EXP_CHANGE event from the exp_manager, send the exp info to the frotnend using webContents */
+        exp_manager.on('NO_EXP_CHANGE', () => {
+            win.webContents.send('NO_EXP_CHANGE')
         })
     })
 });

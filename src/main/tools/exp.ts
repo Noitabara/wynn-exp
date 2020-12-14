@@ -65,10 +65,12 @@ export default class ExpManager extends EventEmitter {
                     .on('end', rc => {
                         here_we_go.destroy()
                         if (exp_data_collection.length > 0) {
-                            // console.log(exp_data_collection)
+                            console.log(exp_data_collection)
                             this.dispatch('EXP_COLLECTION', exp_data_collection)
                         }
                     })
+            } else {
+                this.dispatch('NO_EXP_CHANGE', '')
             }
             this.updateReadSize += byteDiff
         }, 1000)
