@@ -1,6 +1,6 @@
 {
-    "name": "electron-nuxt-ts",
-    "author": "Exeteres",
+    "name": "wyncraft-exp-meter",
+    "author": "Harry Gray III",
     "description": "Electron + Nuxt + Typescript",
     "version": "0.0.1",
     "main": "dist/main",
