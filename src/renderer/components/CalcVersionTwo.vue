@@ -2,10 +2,11 @@
     <div>
         <b-button @click="startExpMeter">Start.</b-button>
         <p>60 second pool length {{ experience_pool.length }}</p>
-        <p>{{ experience_pool.length >= 5 ? `EXP/5s: ${fiveSecondReport}` : `Not enough data to calculate 5/s yet.` }} </p>
+        <!-- <p>{{ experience_pool.length >= 5 ? `EXP/5s: ${fiveSecondReport}` : `Not enough data to calculate 5/s yet.` }} </p> -->
         <p>{{ experience_pool.length >= 10 ? `EXP/10s: ${tenSecondReport}` : `Not enough data to calculate 10/s yet.` }} </p>
-        <p>{{ experience_pool.length >= 30 ? `EXP/30s: ${thirtySecondReport}` : `Not enough data to calculate 30/s yet.` }} </p>
+        <!-- <p>{{ experience_pool.length >= 30 ? `EXP/30s: ${thirtySecondReport}` : `Not enough data to calculate 30/s yet.` }} </p> -->
         <p>{{ experience_pool.length >= 60 ? `EXP/60s: ${sixtySecondReport}` : `Not enough data to calculate 60/s yet.` }} </p>
+        <p>Predicted MTL: {{ Math.floor((maxExperienceValue - current_experience) / sixtySecondReport) }}/min til level.</p>
         <p>{{ experience_pool }}</p>
     </div>
 </template>
