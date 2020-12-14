@@ -2,7 +2,7 @@
     "name": "wyncraft-exp-meter",
     "author": "Harry Gray III",
     "description": "A simple exp tracker for Wynncraft.",
-    "version": "0.0.1",
+    "version": "0.0.10",
     "main": "dist/main",
     "build": {
         "appId": "noita.exptracker.app",
