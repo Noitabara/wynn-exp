@@ -1,11 +1,11 @@
 {
     "name": "wyncraft-exp-meter",
     "author": "Harry Gray III",
-    "description": "Electron + Nuxt + Typescript",
+    "description": "A simple exp tracker for Wynncraft.",
     "version": "0.0.1",
     "main": "dist/main",
     "build": {
-        "appId": "com.example.app",
+        "appId": "noita.exptracker.app",
         "files": [
             {
                 "from": "dist",

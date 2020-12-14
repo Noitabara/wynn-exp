@@ -22,7 +22,6 @@ export default class CalcComponent extends Vue {
     public expOnAvg: number = 0
 
     //~Moar Vuex.
-    // @SettingStore.State('current_experience_value') currentExpValue!: IMasterState['current_experience_value']
     @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
     
     get ttl(): number {
