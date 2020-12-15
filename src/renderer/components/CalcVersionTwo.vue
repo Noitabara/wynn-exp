@@ -7,9 +7,7 @@
         <!-- <p>{{ experience_pool.length >= 30 ? `EXP/30s: ${thirtySecondReport}` : `Not enough data to calculate 30/s yet.` }} </p> -->
         <p>{{ experience_pool.length >= 60 ? `EXP/60s: ${sixtySecondReport}` : `Not enough data to calculate 60/s yet.` }} </p>
         <p>Predicted MTL: {{ Math.floor((maxExperienceValue - current_experience) / sixtySecondReport) }}/min til level.</p>
-        <p>{{ exp_per_minute_log }}</p>
-        <p>{{ experience_pool }}</p>
-        
+        <!-- <p>{{ experience_pool }}</p> -->
     </div>
 </template>
 
@@ -26,6 +24,7 @@ const SettingStore = namespace(settingStoreNamespace)
 export default class CalcVersiontwoComponent extends Vue {
     //~Moar Vuex.
     @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
+    @SettingStore.Action(actionType.ADD_EXP_TO_EXPM_LOG) addExpToEXPMLog!: (exp: number) => void
 
     //* Properties.
     /** Current experience overwritten by the last index of EXP_INFO_UPDATE */
@@ -37,8 +36,6 @@ export default class CalcVersiontwoComponent extends Vue {
 
     /** A counter which is intended to loop every 60 ticks(60 seconds) */
     public minte_has_passed_counter: number = 0
-    /** A historical log of the exp per minute */
-    public exp_per_minute_log: Array<number> = []
 
     //* computed properties.
     /** Last 5 of the 60 second report. */
@@ -99,7 +96,7 @@ export default class CalcVersiontwoComponent extends Vue {
             this.minte_has_passed_counter++
             if (this.minte_has_passed_counter >= 60) {
                 this.minte_has_passed_counter = 0
-                this.exp_per_minute_log.push(this.sixtySecondReport)
+                this.addExpToEXPMLog(this.sixtySecondReport)
             }
         })
         /** This event handler is involved with handling what happens when no exp is gained. */
@@ -114,7 +111,7 @@ export default class CalcVersiontwoComponent extends Vue {
             this.minte_has_passed_counter++
             if (this.minte_has_passed_counter >= 60) {
                 this.minte_has_passed_counter = 0
-                this.exp_per_minute_log.push(this.sixtySecondReport)
+                this.addExpToEXPMLog(this.sixtySecondReport)
             }
         })
     }
