@@ -4,9 +4,7 @@
             <b-col>
                 <p>Technical Stuff.</p>
                 <b-button @click="selectFolder">.minecraft Log Folder</b-button>
-                <div v-for="(exp, index) in currentExpLog" :key="index">
-                    <p> {{ exp }} </p>
-                </div>
+                <b-table striped sticky-header :items="currentExpLog"></b-table>
             </b-col>
             <b-col>
                 <level-component/>
@@ -31,7 +29,7 @@ const SettingStore = namespace(settingStoreNamespace)
 export default class Index extends Vue {
     //~Moar Vuex.
     @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
-    @SettingStore.Getter(GetterType.CURRENT_EXP_LOG) currentExpLog!: Array<number>
+    @SettingStore.Getter(GetterType.CURRENT_EXP_LOG) currentExpLog!: Array<{ experience: number}>
 
     // public currentDirectory: string | undefined
     selectFolder() {
@@ -56,6 +54,6 @@ body {
     text-align: center;
 }
 #main {
-    padding-top: 1em
+    padding-top: 1em;
 }
 </style>

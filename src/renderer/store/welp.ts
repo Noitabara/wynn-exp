@@ -17,7 +17,7 @@ export const GetterType = {
 }
 
 export const getters: GetterTree<IMasterState, IMasterState> = {
-    [GetterType.CURRENT_EXP_LOG]: state => state.experience_per_minute_log
+    [GetterType.CURRENT_EXP_LOG]: state => state.experience_per_minute_log.map(each_exp => { return { experience: each_exp } })
 }
 
 export const MutationType = {
