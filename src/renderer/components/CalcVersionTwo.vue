@@ -7,7 +7,9 @@
         <!-- <p>{{ experience_pool.length >= 30 ? `EXP/30s: ${thirtySecondReport}` : `Not enough data to calculate 30/s yet.` }} </p> -->
         <p>{{ experience_pool.length >= 60 ? `EXP/60s: ${sixtySecondReport}` : `Not enough data to calculate 60/s yet.` }} </p>
         <p>Predicted MTL: {{ Math.floor((maxExperienceValue - current_experience) / sixtySecondReport) }}/min til level.</p>
+        <p>{{ exp_per_minute_log }}</p>
         <p>{{ experience_pool }}</p>
+        
     </div>
 </template>
 
