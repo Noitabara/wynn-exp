@@ -12,7 +12,13 @@ export const state = (): IMasterState => ({
     experience_per_minute_log: []
 })
 
-export const getters: GetterTree<IMasterState, IMasterState> = {}
+export const GetterType = {
+    CURRENT_EXP_LOG: 'currentExpLog'
+}
+
+export const getters: GetterTree<IMasterState, IMasterState> = {
+    [GetterType.CURRENT_EXP_LOG]: state => state.experience_per_minute_log
+}
 
 export const MutationType = {
     CHANGE_MAX_EXPERIENCE: 'changeMaxExperience',

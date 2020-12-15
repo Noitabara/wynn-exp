@@ -4,6 +4,9 @@
             <b-col>
                 <p>Technical Stuff.</p>
                 <b-button @click="selectFolder">.minecraft Log Folder</b-button>
+                <div v-for="(exp, index) in currentExpLog" :key="index">
+                    <p> {{ exp }} </p>
+                </div>
             </b-col>
             <b-col>
                 <level-component/>
@@ -21,13 +24,14 @@ import LevelComponent from "~/components/Level.vue"
 import CalcVersiontwoComponent from '~/components/CalcVersionTwo.vue'
 import { ipcRenderer } from "electron";
 //~ Vuex.
-import { namespace as settingStoreNamespace, IMasterState, actionType } from '~/store/welp'
+import { namespace as settingStoreNamespace, IMasterState, GetterType } from '~/store/welp'
 const SettingStore = namespace(settingStoreNamespace)
 
 @Component({ components: { LevelComponent, CalcVersiontwoComponent } })
 export default class Index extends Vue {
     //~Moar Vuex.
     @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
+    @SettingStore.Getter(GetterType.CURRENT_EXP_LOG) currentExpLog!: Array<number>
 
     // public currentDirectory: string | undefined
     selectFolder() {
