@@ -30,8 +30,13 @@ export default class CalcVersiontwoComponent extends Vue {
     public current_experience: number = 0
     /** Calculation of the last second of exp from EXP_INFO_UPDATE */
     public last_second_calculation: number = 0
-    /**Testing out an array for time gating experience data. */
+    /** Testing out an array for time gating experience data. */
     public experience_pool: Array<number> = []
+
+    /** A counter which is intended to loop every 60 ticks(60 seconds) */
+    public minte_has_passed_counter: number = 0
+    /** A historical log of the exp per minute */
+    public exp_per_minute_log: Array<number> = []
 
     //* computed properties.
     /** Last 5 of the 60 second report. */
@@ -89,6 +94,11 @@ export default class CalcVersiontwoComponent extends Vue {
             if (this.experience_pool.length > 60) {
                 this.experience_pool.shift()
             }
+            this.minte_has_passed_counter++
+            if (this.minte_has_passed_counter >= 60) {
+                this.minte_has_passed_counter = 0
+                this.exp_per_minute_log.push(this.sixtySecondReport)
+            }
         })
         /** This event handler is involved with handling what happens when no exp is gained. */
         ipcRenderer.on('NO_EXP_CHANGE', () => {
@@ -98,6 +108,11 @@ export default class CalcVersiontwoComponent extends Vue {
             this.experience_pool.push(this.last_second_calculation)
             if (this.experience_pool.length > 60) {
                 this.experience_pool.shift()
+            }
+            this.minte_has_passed_counter++
+            if (this.minte_has_passed_counter >= 60) {
+                this.minte_has_passed_counter = 0
+                this.exp_per_minute_log.push(this.sixtySecondReport)
             }
         })
     }
