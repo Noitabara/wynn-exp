@@ -1,18 +1,17 @@
 <template>
     <div>
         <p>Level Information:</p>
-        <b-row v-if="!locked">
+        <b-row>
             <b-col>
                 <b-form-select
-                    v-model="selected"
                     :options="level_data"
+                    @change="setMaxExperience"
                 ></b-form-select>
             </b-col>
             <b-col>
-                <p v-if="selected">{{ selectedFormatted }}</p>
+                <p>{{ currentSetMaxExperience }}</p>
             </b-col>
         </b-row>
-        <b-button @click="setOurData">Set Data</b-button>
     </div>
 </template>
 
@@ -20,18 +19,16 @@
 import Vue from "vue";
 import Component, { namespace } from "nuxt-class-component";
 //~ Vuex.
-import { namespace as settingStoreNamespace, IMasterState, actionType } from '~/store/welp'
+import { namespace as settingStoreNamespace, IMasterState, actionType, GetterType } from '~/store/welp'
 import { ipcRenderer } from "electron";
 const SettingStore = namespace(settingStoreNamespace)
 
 @Component({})
 export default class LevelComponent extends Vue {
     //~Moar Vuex.
-    @SettingStore.Action(actionType.SET_MAX_EXPERIENCE_VALUE) setMaxExperience!: (maxExperienceValue: number) => {}
+    @SettingStore.Action(actionType.SET_MAX_EXPERIENCE_VALUE) setMaxExperience!: (maxExperienceValue: number) => void
+    @SettingStore.Getter(GetterType.CURRENT_MAX_EXPERIENCE) currentSetMaxExperience!: string
 
-    public locked = false
-
-    public selected = null
     public level_data = [
         { text: 1, value: 110 },
         { text: 2, value: 190 },
@@ -139,14 +136,6 @@ export default class LevelComponent extends Vue {
         { text: 104, value: 25649000 },
         { text: 105, value: 249232940 },
     ]
-
-    get selectedFormatted(): number | null {
-        return this.selected?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    }
-
-    setOurData() {
-        this.setMaxExperience(this.selected)
-    }
 }
 </script>
 

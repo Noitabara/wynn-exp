@@ -75,8 +75,12 @@ export default class ExpManager extends EventEmitter {
         }, 1000)
     }
 
-    dispatch(event: string, data: any) {
+    dispatch(event: string, data: any): void {
         this.emit(event, data)
+    }
+    destroy(): void {
+        clearInterval(this.readFile)
+        clearInterval(this.tickrate)
     }
 }
 

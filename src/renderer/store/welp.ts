@@ -13,11 +13,13 @@ export const state = (): IMasterState => ({
 })
 
 export const GetterType = {
-    CURRENT_EXP_LOG: 'currentExpLog'
+    CURRENT_EXP_LOG: 'currentExpLog',
+    CURRENT_MAX_EXPERIENCE: 'currentMaxExperience'
 }
 
 export const getters: GetterTree<IMasterState, IMasterState> = {
-    [GetterType.CURRENT_EXP_LOG]: state => state.experience_per_minute_log.map(each_exp => { return { experience: each_exp } })
+    [GetterType.CURRENT_EXP_LOG]: state => state.experience_per_minute_log.map(each_exp => { return { experience: each_exp } }),
+    [GetterType.CURRENT_MAX_EXPERIENCE]: state => state.max_experience_value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
 export const MutationType = {
