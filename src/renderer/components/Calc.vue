@@ -21,7 +21,7 @@ import { IExpData } from "src/main/tools/exp";
 const SettingStore = namespace(settingStoreNamespace)
 
 @Component({})
-export default class CalcVersiontwoComponent extends Vue {
+export default class Calc extends Vue {
     //~Moar Vuex.
     @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
     @SettingStore.Action(actionType.ADD_EXP_TO_EXPM_LOG) addExpToEXPMLog!: (exp: number) => void

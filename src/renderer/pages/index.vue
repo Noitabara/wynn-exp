@@ -8,7 +8,7 @@
             </b-col>
             <b-col>
                 <level-component/>
-                <calc-versiontwo-component />
+                <calc/>
             </b-col>
         </b-row>
     </b-container>
@@ -19,13 +19,13 @@ import Vue from "vue";
 import Component, { namespace } from "nuxt-class-component";
 // import Logo from "~/components/Logo.vue";
 import LevelComponent from "~/components/Level.vue"
-import CalcVersiontwoComponent from '~/components/CalcVersionTwo.vue'
+import Calc from '~/components/Calc.vue'
 import { ipcRenderer } from "electron";
 //~ Vuex.
 import { namespace as settingStoreNamespace, IMasterState, GetterType } from '~/store/welp'
 const SettingStore = namespace(settingStoreNamespace)
 
-@Component({ components: { LevelComponent, CalcVersiontwoComponent } })
+@Component({ components: { LevelComponent, Calc } })
 export default class Index extends Vue {
     //~Moar Vuex.
     @SettingStore.State('max_experience_value') maxExperienceValue!: IMasterState['max_experience_value']
