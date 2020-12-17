@@ -1,9 +1,13 @@
 <template>
     <div>
         <b-button @click="startExpMeter">Start.</b-button>
-        <p>60 second pool length {{ experience_pool.length }}</p>
+        <b-progress :max="60" height="2rem" id="bar">
+            <b-progress-bar :value="minute_has_passed_counter" variant="secondary">
+                <span id="p_bar_text">Time til log {{ minute_has_passed_counter }}</span>
+            </b-progress-bar>
+        </b-progress>
         <!-- <p>{{ experience_pool.length >= 5 ? `EXP/5s: ${fiveSecondReport}` : `Not enough data to calculate 5/s yet.` }} </p> -->
-        <p>{{ experience_pool.length >= 10 ? `EXP/10s: ${tenSecondReport}` : `Not enough data to calculate 10/s yet.` }} </p>
+        <!-- <p>{{ experience_pool.length >= 10 ? `EXP/10s: ${tenSecondReport}` : `Not enough data to calculate 10/s yet.` }} </p> -->
         <!-- <p>{{ experience_pool.length >= 30 ? `EXP/30s: ${thirtySecondReport}` : `Not enough data to calculate 30/s yet.` }} </p> -->
         <p>{{ experience_pool.length >= 60 ? `EXP/60s: ${sixtySecondReport}` : `Not enough data to calculate 60/s yet.` }} </p>
         <p>Predicted MTL: {{ Math.floor((maxExperienceValue - current_experience) / sixtySecondReport) }}/min til level.</p>
@@ -35,7 +39,7 @@ export default class Calc extends Vue {
     public experience_pool: Array<number> = []
 
     /** A counter which is intended to loop every 60 ticks(60 seconds) */
-    public minte_has_passed_counter: number = 0
+    public minute_has_passed_counter: number = 0
 
     //* computed properties.
     /** Last 5 of the 60 second report. */
@@ -93,9 +97,9 @@ export default class Calc extends Vue {
             if (this.experience_pool.length > 60) {
                 this.experience_pool.shift()
             }
-            this.minte_has_passed_counter++
-            if (this.minte_has_passed_counter >= 60) {
-                this.minte_has_passed_counter = 0
+            this.minute_has_passed_counter++
+            if (this.minute_has_passed_counter >= 60) {
+                this.minute_has_passed_counter = 0
                 this.addExpToEXPMLog(this.sixtySecondReport)
             }
         })
@@ -108,9 +112,9 @@ export default class Calc extends Vue {
             if (this.experience_pool.length > 60) {
                 this.experience_pool.shift()
             }
-            this.minte_has_passed_counter++
-            if (this.minte_has_passed_counter >= 60) {
-                this.minte_has_passed_counter = 0
+            this.minute_has_passed_counter++
+            if (this.minute_has_passed_counter >= 60) {
+                this.minute_has_passed_counter = 0
                 this.addExpToEXPMLog(this.sixtySecondReport)
             }
         })
@@ -119,4 +123,13 @@ export default class Calc extends Vue {
 </script>
 
 <style>
+#p_bar_text {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+}
+#bar {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
 </style>
